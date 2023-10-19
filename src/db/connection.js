@@ -6,4 +6,4 @@ connection.authenticate();
 
 console.log("DB connection is working");
 
-module.export = connection;
+module.exports = connection;
