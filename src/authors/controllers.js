@@ -1,46 +1,41 @@
-const { request, response } = require("express");
 const Author = require("./model");
-const Book = require("./model");
+const Book = require("../books/model");
 
-const { findBookByAuthor } = require("../books/controllers");
-// POST- adds an author to DB
-const addAuthor = async (request, response) => {
-  const newAuthor = await Author.create({
-    authorName: request.body.authorName,
-  });
-  const successResponse = {
-    message: "success",
-    newAuthor,
-  };
-  response.send(successResponse);
+const addAuthor = async (req, res) => {
+  try {
+    const author = await Author.create(req.body);
+
+    res.status(201).json({ message: "success", author });
+  } catch (error) {
+    res.status(500).json({ message: error.message, error });
+  }
 };
 
-// GET - gets a single author by author name and retrives associated books
+const getAllAuthors = async (req, res) => {
+  try {
+    const authors = await Author.findAll();
 
-// const findAuthorByNameAndAllBooks = async (request, response) => {
-//   const foundAuthor = await Author.findAll(
+    res.status(200).json({ message: "success", authors });
+  } catch (error) {
+    res.status(500).json({ message: error.message, error });
+  }
+};
 
-//     {
-//       where: {
-//         author: require.params.authorName,
-//       },
-//     }
-//   );
-//   const findBooksByAuthor = await Book.findAll({
-//     where: {
-//       author: require.params.authorName,
-//     },
-//   });
+const getAuthorAndBooks = async (req, res) => {
+  try {
+    const author = await Author.findOne({
+      where: { authorName: req.params.authorName },
+      include: Book,
+    });
 
-//   const successResponse = {
-//     message: "success",
-//     author: foundAuthor,
-//     findBooksByAuthor,
-//   };
-//   response.send(successResponse);
-// };
+    res.status(200).json({ message: "success", author });
+  } catch (error) {
+    res.status(500).json({ message: error.message, error });
+  }
+};
 
 module.exports = {
-  addAuthor: addAuthor,
-  findAuthorByNameAndAllBooks: findAuthorByNameAndAllBooks,
+  addAuthor,
+  getAllAuthors,
+  getAuthorAndBooks,
 };

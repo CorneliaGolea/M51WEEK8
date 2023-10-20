@@ -1,10 +1,13 @@
 const Book = require("./model");
+const Author = require("../authors/model");
 // POST- adds a book to the DB
 const createBook = async (request, response) => {
   const newBook = await Book.create({
     title: request.body.title,
     author: request.body.author,
     genre: request.body.genre,
+    AuthorId: request.body.AuthorId,
+    GenreId: request.body.GenreId,
   });
   console.log("!!!!!!:", newBook);
   const successResponse = {
@@ -88,6 +91,20 @@ const deleteAll = async (request, response) => {
   response.send(successResponse);
 };
 
+const getBookAndAuthor = async (req, res) => {
+  try {
+    const book = await Book.findOne({
+      where: { title: req.params.title },
+    });
+
+    const author = await book.getAuthor();
+
+    res.status(200).json({ message: "success", book, author });
+  } catch (error) {
+    res.status(500).json({ message: error.message, error });
+  }
+};
+
 module.exports = {
   createBook: createBook,
   findAllBooks: findAllBooks,
@@ -95,4 +112,5 @@ module.exports = {
   updateByTitleDynamic: updateByTitleDynamic,
   deleteByTitle: deleteByTitle,
   deleteAll: deleteAll,
+  getBookAndAuthor,
 };

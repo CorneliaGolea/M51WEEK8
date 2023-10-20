@@ -1,10 +1,10 @@
 const { DataTypes } = require("sequelize");
 const connection = require("../db/connection");
 
-const Author = connection.define("Author", {
-  authorName: {
+const Genre = connection.define("Genre", {
+  genreName: {
     type: DataTypes.STRING,
   },
 });
 
-module.exports = Author;
+module.exports = Genre;

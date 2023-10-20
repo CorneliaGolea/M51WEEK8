@@ -10,13 +10,15 @@ const {
   updateByTitleDynamic,
   deleteByTitle,
   deleteAll,
+  getBookAndAuthor,
 } = require("./controllers");
 
-bookRouter.post("/books", createBook);
-bookRouter.get("/books", findAllBooks);
-bookRouter.get("/books/:author", findBookByAuthor);
-bookRouter.put("/books/:title", updateByTitleDynamic);
-bookRouter.delete("/books/deleteByTitle", deleteByTitle);
-bookRouter.delete("/books/deleteAll", deleteAll);
+bookRouter.post("/", createBook);
+bookRouter.get("/", findAllBooks);
+bookRouter.get("/:author", findBookByAuthor);
+bookRouter.put("/:title", updateByTitleDynamic);
+bookRouter.delete("/deleteByTitle", deleteByTitle);
+bookRouter.delete("/deleteAll", deleteAll);
+bookRouter.get("/:title", getBookAndAuthor);
 
 module.exports = bookRouter;
