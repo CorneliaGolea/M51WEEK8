@@ -1,12 +1,16 @@
 const { Router } = require("express");
 const authorRouter = Router();
 
-const Author = require("./model");
-const Book = require("./model");
+const {
+  addAuthor,
+  getAllAuthors,
+  getAuthorAndBooks,
+} = require("./controllers");
 
-const { addAuthor, findAuthorByNameAndAllBooks } = require("./controllers");
+authorRouter.post("/", addAuthor);
 
-authorRouter.post("/authors", addAuthor);
-authorRouter.get("/authors/:authorName", findAuthorByNameAndAllBooks);
+authorRouter.get("/", getAllAuthors);
+
+authorRouter.get("/:authorName", getAuthorAndBooks);
 
 module.exports = authorRouter;
